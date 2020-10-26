@@ -15,6 +15,12 @@ import (
 	"github.com/crewjam/saml/logger"
 )
 
+var (
+	MetadataSuffix = "saml/metadata"
+	AcsSuffix = "saml/acs"
+	SloSuffix = "saml/slo"
+)
+
 // Options represents the parameters for creating a new middleware
 type Options struct {
 	EntityID          string
@@ -121,9 +127,9 @@ func DefaultRequestTracker(opts Options, serviceProvider *saml.ServiceProvider) 
 // DefaultServiceProvider returns the default saml.ServiceProvider for the provided
 // options.
 func DefaultServiceProvider(opts Options) saml.ServiceProvider {
-	metadataURL := opts.URL.ResolveReference(&url.URL{Path: "saml/metadata"})
-	acsURL := opts.URL.ResolveReference(&url.URL{Path: "saml/acs"})
-	sloURL := opts.URL.ResolveReference(&url.URL{Path: "saml/slo"})
+	metadataURL := opts.URL.ResolveReference(&url.URL{Path: MetadataSuffix})
+	acsURL := opts.URL.ResolveReference(&url.URL{Path: AcsSuffix})
+	sloURL := opts.URL.ResolveReference(&url.URL{Path: SloSuffix})
 
 	var forceAuthn *bool
 	if opts.ForceAuthn {

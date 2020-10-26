@@ -3,6 +3,7 @@ package samlsp
 import (
 	"encoding/xml"
 	"net/http"
+	"strings"
 
 	"github.com/crewjam/saml"
 )
@@ -50,12 +51,12 @@ type Middleware struct {
 // on the URIs specified by m.ServiceProvider.MetadataURL and
 // m.ServiceProvider.AcsURL.
 func (m *Middleware) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == m.ServiceProvider.MetadataURL.Path {
+	if strings.HasSuffix(r.URL.Path, MetadataSuffix) && strings.HasSuffix(m.ServiceProvider.MetadataURL.Path, MetadataSuffix) {
 		m.serveMetadata(w, r)
 		return
 	}
 
-	if r.URL.Path == m.ServiceProvider.AcsURL.Path {
+	if strings.HasSuffix(r.URL.Path, AcsSuffix) && strings.HasSuffix(m.ServiceProvider.AcsURL.Path, AcsSuffix) {
 		m.serveACS(w, r)
 		return
 	}
